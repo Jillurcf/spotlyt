@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Menu } from 'antd';
+import { Button, Drawer, Menu } from 'antd';
 import logo from '../../../assets/Images/logo.png';
 import { useNavigate } from 'react-router-dom';
+import { MenuOutlined } from '@ant-design/icons';
 
 const items = [
   {
@@ -23,10 +24,12 @@ const items = [
 const NavBarAnt = () => {
   const navigate = useNavigate();
   const [current, setCurrent] = useState('');
+  const [visible, setIsVisible] = useState(false);
 
   const onClick = (e) => {
     setCurrent(e.key);
     navigate(e.key);
+    setIsVisible(false)
   };
 
   return (
@@ -36,7 +39,8 @@ const NavBarAnt = () => {
         <div className="logo">
           <img className="h-8" src={logo} alt="Logo" />
         </div>
-        {/* Menu Section */}
+        {/*Desktop Menu Section */}
+        <div className='hidden md:flex flex-1 justify-end items-center'>
         <Menu
           onClick={onClick}
           theme="dark"
@@ -59,7 +63,44 @@ const NavBarAnt = () => {
           ))}
         </Menu>
         <Button className='bg-green-600 hover:bg-yellow-500 hover:text-white border-none' type='secondary'>WhatsApp Channel</Button>
+        </div>
+       {/* Mobile Menu Toggle */}
+       <div className='md:hidden flex items-center'>
+        <Button 
+        type='text'
+        icon={<MenuOutlined/>}
+        onClick={() => setIsVisible(true)}
+        style={{color:'white'}}
+        />
+       </div>
       </div>
+{/* Mobile Menu Drawer */}
+<Drawer
+title="Menu"
+placement="right"
+onClose={() => setIsVisible(false)}
+visible={visible}
+bodyStyle={{padding: 0}}
+>
+<Menu
+          onClick={onClick}
+          selectedKeys={[current]}
+          mode="vertical"
+          style={{ borderRight: 0 }}
+        >
+          {items.map(item => (
+            <Menu.Item
+              key={item.key}
+              style={{
+                backgroundColor: current === item.key ? 'green' : 'transparent',
+                color: current === item.key ? 'white' : 'black',
+              }}
+            >
+              {item.label}
+            </Menu.Item>
+          ))}
+        </Menu>
+</Drawer>
     </div>
   );
 }
