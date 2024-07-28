@@ -1,7 +1,38 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import downloadImg from '../assets/Images/downloadApp.png'
+import {motion} from "framer-motion";
 
 const CommingSoon = () => {
+
+const ref = useRef(null);
+const [inView, setInView] = useState(false)
+
+useEffect(() => {
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if(entry.isIntersecting) {
+        setInView(true);
+        observer.disconnect();
+      }
+    },
+    {
+      rootMargin: '0px 0px -10% 0px',
+      threshold: 0.1,
+    }
+  );
+  if(ref.current) {
+    observer.observe(ref.current)
+  }
+
+  return () => {
+    if(ref.current) {
+      observer.unobserve(ref.current);
+    }
+  }
+}, [])
+
+
+
   return (
     <div className='bg-green-500 h-[600px] mt-36'>
        <div className="text-center">
@@ -14,9 +45,17 @@ const CommingSoon = () => {
        </div>
       </div>
     <div className='flex space-x-6 mx-auto max-w-screen-md py-8'>
-        <div>
+        <motion.div
+        // animate={{ x: [null, 100, 0] }}
+        // animate={{ x: [0, 100, 0] }}
+        ref={ref}
+        initial={{ opacity: 0 }}
+        // animate={{ opacity: 1, scale: 1 }}
+        animate={inView ? {opacity: 1, scale: 1} : {}}
+        transition={{ duration: 0.5 }}
+        >
             <img src={downloadImg} alt="" />
-        </div>
+        </motion.div>
         <div>
         <img src={downloadImg} alt="" />
         </div>
@@ -25,4 +64,4 @@ const CommingSoon = () => {
   )
 }
 
-export default CommingSoon
+export default CommingSoon;

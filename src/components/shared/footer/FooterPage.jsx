@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Menu } from 'antd';
+import { Button, Layout, Menu } from 'antd';
 import logo from '../../../assets/Images/logo.png';
 import { FaWhatsapp, FaFacebookSquare, FaInstagram, FaTiktok } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
@@ -63,10 +63,12 @@ const FooterPage = () => {
                 {items.map(item => (
                   <Menu.Item
                     key={item.key}
+                    // className={`rounded bg-transparent ${current === item.key ? 'text-gray-500' : 'text-gray-500'} m-[-10px] p-0`}
                     style={{
                       borderRadius: 5,
                       backgroundColor: 'transparent',
-                      color: current === item.key ? 'gray' : 'gray',
+                      // color: current === item.key ? 'gray' : 'gray',
+                      color: current === item.key ? '#9CA3AF' : '#9CA3AF',
                       margin: '-10px 0', 
                       padding: '-10px 0', 
                     }}
@@ -79,6 +81,8 @@ const FooterPage = () => {
           </div>
           <div>
             <h1 className='text-xl'>Our WhatsApp Channel</h1>
+            <p className='py-8 text-gray-400'>Join our Whatsapp Channel to get regular updates with everything Spotlyt</p>
+            <Button className='bg-green-600 hover:bg-yellow-500 hover:text-white border-none' type='secondary'>WhatsApp Channel</Button>
           </div>
         </div>
       </Footer>

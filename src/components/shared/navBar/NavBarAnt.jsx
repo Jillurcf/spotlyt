@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Drawer, Menu } from 'antd';
 import logo from '../../../assets/Images/logo.png';
 import { useNavigate } from 'react-router-dom';
 import { MenuOutlined } from '@ant-design/icons';
+
 
 const items = [
   {
@@ -25,6 +26,7 @@ const NavBarAnt = () => {
   const navigate = useNavigate();
   const [current, setCurrent] = useState('');
   const [visible, setIsVisible] = useState(false);
+  const [fontSize, setFontSize] = useState(24)
 
   const onClick = (e) => {
     setCurrent(e.key);
@@ -32,12 +34,23 @@ const NavBarAnt = () => {
     setIsVisible(false)
   };
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const newFontSize = Math.min(24 + scrollY / 10, 40);
+      setFontSize(newFontSize)
+    }
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  },[])
+
   return (
     <div className="fixed top-0 w-full bg-transparent z-10">
       <div className="w-full bg-black max-w-screen-lg mx-auto flex items-center justify-between p-2">
         {/* Logo Section */}
-        <div className="logo">
-          <img className="h-8" src={logo} alt="Logo" />
+        <div className="logo flex space-x-4">
+          {/* <img className="h-8" src={logo} alt="Logo" /> */}
+          <h1 className='text-yellow-400' style={{fontSize: `${fontSize}px`}}>Spotlyt</h1>
         </div>
         {/*Desktop Menu Section */}
         <div className='hidden md:flex flex-1 justify-end items-center'>
@@ -62,7 +75,7 @@ const NavBarAnt = () => {
             </Menu.Item>
           ))}
         </Menu>
-        <Button className='bg-green-600 hover:bg-yellow-500 hover:text-white border-none' type='secondary'>WhatsApp Channel</Button>
+        <Button className='bg-green-600 hover:bg-yellow-500 text-white hover:text-white border-none' type='secondary'>WhatsApp Channel</Button>
         </div>
        {/* Mobile Menu Toggle */}
        <div className='md:hidden flex items-center'>
